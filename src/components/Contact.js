@@ -27,30 +27,34 @@ export const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonText("Sending...");
-
+  
     try {
-      const response = await fetch("http://localhost:5000/contact", {
+      const response = await fetch("/api/contact", {  // Use relative API path
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify(formDetails),
       });
-
+  
       const result = await response.json();
       setButtonText("Send");
-
+  
       if (response.ok && result.code === 200) {
-        setStatus({ success: true, message: "Message sent successfully !" });
+        setStatus({ success: true, message: "Message sent successfully!" });
         setFormDetails(formInitialDetails);
       } else {
-        throw new Error(result.error || "Failed to send message ");
+        throw new Error(result.error || "Failed to send message");
       }
     } catch (error) {
       console.error("Error:", error);
-      setStatus({ success: false, message: "Something went wrong, please try again later." });
+      setStatus({
+        success: false,
+        message: "Something went wrong, please try again later.",
+      });
     }
   };
+  
 
   return (
     <section className="contact" id="connect">
